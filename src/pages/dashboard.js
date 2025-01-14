@@ -14,14 +14,9 @@ const Dashboard = () => {
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
-    setIsPopupOpen,
-    setErrorMessage
+    handleLogout,
+    handlePopupClose
   } = useDashboard();
-
-  const handlePopupClose = () => {
-    setIsPopupOpen(false);
-    setErrorMessage(null);
-  };
 
   return (
     <div>
@@ -29,7 +24,7 @@ const Dashboard = () => {
       <h1>User Dashboard</h1>
       <ErrorMessage message={errorMessage} />
       <button onClick={handleAddUser}>Add User</button>
-      <button onClick={() => localStorage.removeItem('authToken')}>Logout</button>
+      <button onClick={handleLogout}>Logout</button>
       <table>
         <thead>
           <tr>

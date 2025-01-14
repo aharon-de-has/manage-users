@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import apiRequest from '../service/apiRequest';
+import { useNavigate } from 'react-router-dom';
 
 const useDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -7,6 +8,7 @@ const useDashboard = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -84,6 +86,16 @@ const useDashboard = () => {
     }
   };
 
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+    setErrorMessage(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/login');
+  };
+
   return {
     users,
     selectedUser,
@@ -94,8 +106,8 @@ const useDashboard = () => {
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
-    setIsPopupOpen,
-    setErrorMessage
+    handlePopupClose,
+    handleLogout
   };
 };
 
