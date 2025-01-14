@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginSuccess, setError } from '../redux/auth/authSlice';
+import { loginSuccess, logout, setError } from '../redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from '../service/apiRequest';
 
@@ -15,8 +15,6 @@ const useLogin = () => {
 
     try {
       const data = await apiRequest('POST', 'auth/login', { username, password });
-      localStorage.setItem('authToken', data.token);
-
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
     } catch (error) {
@@ -24,12 +22,18 @@ const useLogin = () => {
     }
   };
 
+    const handleLogout = () => {
+      dispatch(logout());
+      navigate('/login');
+    };
+
   return {
     username,
     password,
     setUsername,
     setPassword,
     handleLogin,
+    handleLogout
   };
 };
 

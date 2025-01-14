@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import apiRequest from '../service/apiRequest';
-import { useNavigate } from 'react-router-dom';
 
 const useDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -8,7 +7,6 @@ const useDashboard = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -21,7 +19,7 @@ const useDashboard = () => {
     };
 
     fetchUsers();
-  }, [users]);
+  }, []);
 
   const handleAddUser = () => {
     setSelectedUser(null);
@@ -76,7 +74,8 @@ const useDashboard = () => {
       const data = await apiRequest(method, url, userData);
   
       if (isEditing) {
-        setUsers(users.map((user) => (user.id === data.id ? data : user)));
+        setUsers(users.map((user) => (user._id === data._id ? { ...user, ...data } : user)));
+
       } else {
         setUsers([...users, data]);
       }
@@ -91,10 +90,6 @@ const useDashboard = () => {
     setErrorMessage(null);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/login');
-  };
 
   return {
     users,
@@ -106,8 +101,7 @@ const useDashboard = () => {
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
-    handlePopupClose,
-    handleLogout
+    handlePopupClose
   };
 };
 

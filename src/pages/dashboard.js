@@ -1,6 +1,7 @@
 import React from 'react';
 import useDashboard from '../hooks/useDashboard';
-import UserForm from './userForm';
+import useLogin from '../hooks/useLogin';
+import UserForm from '../components/UserForm';
 import ErrorMessage from '../components/ErrorMessage'; 
 import './dashboard.css';
 
@@ -14,9 +15,10 @@ const Dashboard = () => {
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
-    handleLogout,
     handlePopupClose
   } = useDashboard();
+
+  const { handleLogout } = useLogin();
 
   return (
     <div>
