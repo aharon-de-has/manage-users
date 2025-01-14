@@ -1,5 +1,8 @@
-const apiRequest = async (method, endpoint, body = null) => {
+// import { useSelector } from 'react-redux';
+
+const useApiRequest = async (method, endpoint, body = null) => {
     const token = localStorage.getItem('authToken');
+    //  const token = useSelector((state) => state.auth.token);
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -25,5 +28,5 @@ const apiRequest = async (method, endpoint, body = null) => {
     }
   };
   
-  export default apiRequest;
+  export default useApiRequest;
   

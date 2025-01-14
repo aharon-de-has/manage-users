@@ -6,6 +6,7 @@ const useDashboard = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -13,7 +14,7 @@ const useDashboard = () => {
         const data = await apiRequest('GET', 'users');
         setUsers(data.map(user => ({ ...user, id: user._id })));
       } catch (error) {
-        console.error('Error fetching users:', error.message);
+        setErrorMessage(error.message);
       }
     };
 
@@ -24,12 +25,14 @@ const useDashboard = () => {
     setSelectedUser(null);
     setIsEditing(false);
     setIsPopupOpen(true);
+    setErrorMessage(null);
   };
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
     setIsEditing(true);
     setIsPopupOpen(true);
+    setErrorMessage(null);
   };
 
 
@@ -37,7 +40,7 @@ const useDashboard = () => {
     const token = localStorage.getItem('authToken');
 
     if (!token) {
-      console.error('No authentication token found');
+      setErrorMessage('No authentication token found');
       return;
     }
 
@@ -58,6 +61,15 @@ const useDashboard = () => {
       const url = isEditing
         ? `users/${selectedUser._id}`
         : 'users';
+
+        if (isEditing && !userData.password) {
+          delete userData.password;
+        }
+  
+      if (!isEditing && !userData.password) {
+        setErrorMessage('Password is required for adding a new user.');
+        return;
+      }
   
       const data = await apiRequest(method, url, userData);
   
@@ -77,11 +89,13 @@ const useDashboard = () => {
     selectedUser,
     isPopupOpen,
     isEditing,
+    errorMessage,
     handleAddUser,
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
     setIsPopupOpen,
+    setErrorMessage
   };
 };
 

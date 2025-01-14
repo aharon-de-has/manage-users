@@ -51,7 +51,6 @@ const UserForm = ({ user, onSubmit, onClose }) => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
         type="password"
-        required
       />
       <div className="flex justify-between">
         <button type="submit" disabled={loading}>

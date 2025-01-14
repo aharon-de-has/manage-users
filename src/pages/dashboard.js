@@ -1,6 +1,7 @@
 import React from 'react';
 import useDashboard from '../hooks/useDashboard';
 import UserForm from './userForm';
+import ErrorMessage from '../components/ErrorMessage'; 
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -8,16 +9,25 @@ const Dashboard = () => {
     users,
     selectedUser,
     isPopupOpen,
+    errorMessage,
     handleAddUser,
     handleEditUser,
     handleDeleteUser,
     handleFormSubmit,
     setIsPopupOpen,
+    setErrorMessage
   } = useDashboard();
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+    setErrorMessage(null);
+  };
 
   return (
     <div>
+        <ErrorMessage message={errorMessage} />
       <h1>User Dashboard</h1>
+      <ErrorMessage message={errorMessage} />
       <button onClick={handleAddUser}>Add User</button>
       <button onClick={() => localStorage.removeItem('authToken')}>Logout</button>
       <table>
@@ -46,7 +56,7 @@ const Dashboard = () => {
 
       {isPopupOpen && (
         <div className="popup">
-          <UserForm user={selectedUser} onSubmit={handleFormSubmit} onClose={() => setIsPopupOpen(false)} />
+          <UserForm user={selectedUser} onSubmit={handleFormSubmit} onClose={() => handlePopupClose()} />
         </div>
       )}
     </div>
