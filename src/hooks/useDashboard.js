@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import apiRequest from '../service/apiRequest';
 
 const useDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -8,24 +9,8 @@ const useDashboard = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        console.error('No authentication token found');
-        return;
-      }
-
       try {
-        const response = await fetch('https://server-n42x.onrender.com/api/users', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error('Failed to fetch users');
-
-        const data = await response.json();
+        const data = await apiRequest('GET', 'users');
         setUsers(data.map(user => ({ ...user, id: user._id })));
       } catch (error) {
         console.error('Error fetching users:', error.message);
@@ -57,15 +42,7 @@ const useDashboard = () => {
     }
 
     try {
-      const response = await fetch(`https://server-n42x.onrender.com/api/users/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete user');
+      await apiRequest('DELETE', `users/${id}`);
       setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
       console.error('Error deleting user:', error.message);
@@ -76,25 +53,14 @@ const useDashboard = () => {
     try {
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('Authentication token is missing.');
-
+  
       const method = isEditing ? 'PUT' : 'POST';
       const url = isEditing
-        ? `https://server-n42x.onrender.com/api/users/${selectedUser._id}`
-        : 'https://server-n42x.onrender.com/api/users';
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to save user. Status code: ${response.status}`);
-      }
-
-      const data = await response.json();
+        ? `users/${selectedUser._id}`
+        : 'users';
+  
+      const data = await apiRequest(method, url, userData);
+  
       if (isEditing) {
         setUsers(users.map((user) => (user.id === data.id ? data : user)));
       } else {

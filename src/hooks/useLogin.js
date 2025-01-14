@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, setError } from '../redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import apiRequest from '../service/apiRequest';
 
 const useLogin = () => {
   const [username, setUsername] = useState('');
@@ -13,19 +14,7 @@ const useLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://server-n42x.onrender.com/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Invalid username or password');
-      }
-
-      const data = await response.json();
+      const data = await apiRequest('POST', 'auth/login', { username, password });
       localStorage.setItem('authToken', data.token);
 
       dispatch(loginSuccess(data.token));
@@ -37,8 +26,8 @@ const useLogin = () => {
 
   return {
     username,
-    setUsername,
     password,
+    setUsername,
     setPassword,
     handleLogin,
   };
