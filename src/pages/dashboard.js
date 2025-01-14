@@ -22,7 +22,6 @@ const Dashboard = () => {
 
   return (
     <div>
-        <ErrorMessage message={errorMessage} />
       <h1>User Dashboard</h1>
       <ErrorMessage message={errorMessage} />
       <button onClick={handleAddUser}>Add User</button>

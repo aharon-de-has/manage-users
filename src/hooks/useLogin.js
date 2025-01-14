@@ -7,6 +7,7 @@ import apiRequest from '../service/apiRequest';
 const useLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('')
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const useLogin = () => {
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
     } catch (error) {
+      setErrorMessage('server error, please try again')
       dispatch(setError(error.message));
     }
   };
@@ -30,8 +32,10 @@ const useLogin = () => {
   return {
     username,
     password,
+    errorMessage,
     setUsername,
     setPassword,
+    setErrorMessage,
     handleLogin,
     handleLogout
   };

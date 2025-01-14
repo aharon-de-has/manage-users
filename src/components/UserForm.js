@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import { useSelector } from 'react-redux';
+import ErrorMessage from '../components/ErrorMessage'; 
 
 const UserForm = ({ user, onSubmit, onClose }) => {
   const [username, setUsername] = useState(user?.username || '');
@@ -28,6 +28,8 @@ const UserForm = ({ user, onSubmit, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <ErrorMessage message={error} />
+
       <input
         value={username}
         onChange={(e) => setUsername(e.target.value)}
@@ -61,7 +63,6 @@ const UserForm = ({ user, onSubmit, onClose }) => {
           Close
         </button>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>
   );
 };
