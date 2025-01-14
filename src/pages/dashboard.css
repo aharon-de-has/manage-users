@@ -139,3 +139,9 @@
     cursor: pointer;
   }
   
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px; 
+  }

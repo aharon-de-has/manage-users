@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const UserForm = ({ user, onSubmit }) => {
+const UserForm = ({ user, onSubmit, onClose }) => {
   const [username, setUsername] = useState(user?.username || '');
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -53,9 +53,14 @@ const UserForm = ({ user, onSubmit }) => {
         type="password"
         required
       />
-      <button type="submit" disabled={loading}>
-        {loading ? 'Saving...' : 'Save'}
-      </button>
+      <div className="flex justify-between">
+        <button type="submit" disabled={loading}>
+          {loading ? 'Saving...' : 'Save'}
+        </button>
+        <button type="button" onClick={onClose}>
+          Close
+        </button>
+      </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>
   );
