@@ -1,5 +1,6 @@
 const apiRequest = async (method, endpoint, body = null) => {
     const token = localStorage.getItem('authToken');
+    const apiUrl = process.env.REACT_APP_API_URL
     
     const headers = {
       'Content-Type': 'application/json',
@@ -10,7 +11,8 @@ const apiRequest = async (method, endpoint, body = null) => {
     }
   
     try {
-      const response = await fetch(`https://server-n42x.onrender.com/api/${endpoint}`, {
+      const response = await fetch(`${apiUrl}${endpoint}`, {
+        // const response = await fetch(`https://server-n42x.onrender.com/api/${endpoint}`, {
         method,
         headers,
         body: body ? JSON.stringify(body) : null,

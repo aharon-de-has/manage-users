@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import apiRequest from '../service/apiRequest';
+import { getAllUsers, addUser, editUser, deleteUser } from '../service/fetchUsers';
 
 const useDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +11,7 @@ const useDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await apiRequest('GET', 'users');
+        const data = await getAllUsers();
         setUsers(data.map(user => ({ ...user, id: user._id })));
       } catch (error) {
         setErrorMessage(error.message);
@@ -43,10 +43,10 @@ const useDashboard = () => {
       setErrorMessage('No authentication token found');
       return;
     }
-
+    const updatedUsers = users.filter((user) => user.id !== id); 
+    setUsers(updatedUsers);
     try {
-      await apiRequest('DELETE', `users/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
+      await deleteUser(id);
     } catch (error) {
       console.error('Error deleting user:', error.message);
     }
@@ -56,11 +56,6 @@ const useDashboard = () => {
     try {
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('Authentication token is missing.');
-  
-      const method = isEditing ? 'PUT' : 'POST';
-      const url = isEditing
-        ? `users/${selectedUser._id}`
-        : 'users';
 
         if (isEditing && !userData.password) {
           delete userData.password;
@@ -71,7 +66,7 @@ const useDashboard = () => {
         return;
       }
   
-      const data = await apiRequest(method, url, userData);
+      const data = await (isEditing ? editUser(selectedUser._id, userData) : addUser(userData));
   
       if (isEditing) {
         setUsers(users.map((user) => (user._id === data._id ? { ...user, ...data } : user)));
@@ -82,6 +77,7 @@ const useDashboard = () => {
       setIsPopupOpen(false);
     } catch (error) {
       console.error('Error submitting user form:', error.message);
+      setErrorMessage('Server error, please try again')
     }
   };
 
@@ -97,6 +93,7 @@ const useDashboard = () => {
     isPopupOpen,
     isEditing,
     errorMessage,
+    setErrorMessage,
     handleAddUser,
     handleEditUser,
     handleDeleteUser,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, logout, setError } from '../redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import apiRequest from '../service/apiRequest';
+import { login } from '../service/fetchUsers';
 
 const useLogin = () => {
   const [username, setUsername] = useState('');
@@ -15,11 +15,11 @@ const useLogin = () => {
     e.preventDefault();
 
     try {
-      const data = await apiRequest('POST', 'auth/login', { username, password });
+      const data = await login(username, password);
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
     } catch (error) {
-      setErrorMessage('server error, please try again')
+      setErrorMessage('Server error, please try again')
       dispatch(setError(error.message));
     }
   };

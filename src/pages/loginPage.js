@@ -3,7 +3,15 @@ import useLogin from '../hooks/useLogin';
 import ErrorMessage from '../components/ErrorMessage'; 
 
 const LoginPage = () => {
-  const { username, setUsername, password, setPassword, errorMessage, setErrorMessage, handleLogin } = useLogin();
+  const { 
+    username, 
+    password,
+    errorMessage,
+    setUsername, 
+    setPassword, 
+    setErrorMessage, 
+    handleLogin 
+  } = useLogin();
 
   return (
     <form onSubmit={handleLogin}>
@@ -27,7 +35,7 @@ const LoginPage = () => {
           setErrorMessage('')
         }}
       />
-      <button type="submit">Login</button>
+      <button type="submit" disabled={!username || !password}>Login</button>
     </form>
   );
 };
