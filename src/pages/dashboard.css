@@ -54,6 +54,8 @@
   th, td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
+    overflow-wrap: break-word;
+    max-width: 200px; 
   }
   
   th {
