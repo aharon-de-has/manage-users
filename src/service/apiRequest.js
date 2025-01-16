@@ -16,11 +16,6 @@ const apiRequest = async (method, endpoint, body = null) => {
         headers,
         body: body ? JSON.stringify(body) : null,
       });
-      console.log("🚀 ~ apiRequest ~ response:", response)
-      // if (!response.ok) {
-      //   throw new Error('Request failed');
-      // }
-  
       return await response;
     } catch (error) {
       throw new Error(error.message);
