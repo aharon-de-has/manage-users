@@ -14,6 +14,11 @@ const useDashboard = () => {
       try {
         const response = await getAllUsers();
         const data = await response.json();
+        if (data.message === 'Access token is missing or invalid') {
+          setErrorMessage('Access token is missing or invalid');
+          return;
+        }
+     
         setUsers(data.map(user => ({ ...user, id: user._id })));
       } catch (error) {
         setErrorMessage(error.message);
@@ -84,6 +89,10 @@ const useDashboard = () => {
       }
       setIsPopupOpen(false);
     } catch (error) {
+      if (error.message === 'Authentication token is missing.') {
+        setErrorMessage('Authentication token is missing.');
+        return;
+      }
       console.error('Error submitting user form:', error.message);
       setErrorMessage('Server error, please try again')
     }

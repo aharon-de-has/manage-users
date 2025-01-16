@@ -3,7 +3,7 @@
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(90deg, #ff6b6b, #e53e3e); /* מעבר צבעים */
+  background: linear-gradient(90deg, #ff6b6b, #e53e3e);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
