@@ -1,18 +1,36 @@
 .error-message {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #e53e3e; 
-    color: white;
-    padding: 1rem;
-    border-radius: 0.375rem; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 50;
-    font-weight: bold;
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #ff6b6b, #e53e3e); /* מעבר צבעים */
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error-message .icon {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
-  
-  .error-message strong {
-    font-weight: bold;
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
   }
+}
+
+
   

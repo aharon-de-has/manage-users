@@ -17,6 +17,10 @@ const useLogin = () => {
     try {
       const response = await login(username, password);
       const data = await response.json();
+      if (data.message === 'Invalid username or password') {
+        setErrorMessage('Invalid username or password');
+        return;
+      }
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
     } catch (error) {

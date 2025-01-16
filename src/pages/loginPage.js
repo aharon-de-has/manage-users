@@ -35,7 +35,7 @@ const LoginPage = () => {
           setErrorMessage('')
         }}
       />
-      <button type="submit" disabled={!username || !password}>Login</button>
+      <button type="submit" disabled={!username || !password || errorMessage}>Login</button>
     </form>
   );
 };
