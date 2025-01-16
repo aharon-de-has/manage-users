@@ -21,16 +21,6 @@
   margin-right: 0.5rem;
 }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
-  }
-}
 
 
   
