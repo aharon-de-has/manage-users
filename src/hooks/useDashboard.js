@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllUsers, addUser, editUser, deleteUser } from '../service/fetchUsers';
+import  store  from '../redux/store';
 
 const useDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -38,8 +39,7 @@ const useDashboard = () => {
 
 
   const handleDeleteUser = async (id) => {
-    const token = localStorage.getItem('authToken');
-
+    const token = store.getState().auth.token;
     if (!token) {
       setErrorMessage('No authentication token found');
       return;
@@ -60,7 +60,7 @@ const useDashboard = () => {
 
   const handleFormSubmit = async (userData) => {
     try {
-      const token = localStorage.getItem('authToken');
+      const token = store.getState().auth.token;
       if (!token) throw new Error('Authentication token is missing.');
 
         if (isEditing && !userData.password) {

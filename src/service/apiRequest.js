@@ -1,5 +1,7 @@
+import store from '../redux/store';
+
 const apiRequest = async (method, endpoint, body = null) => {
-    const token = localStorage.getItem('authToken');
+    const token = store.getState().auth.token;
     const apiUrl = process.env.REACT_APP_API_URL
     
     const headers = {
