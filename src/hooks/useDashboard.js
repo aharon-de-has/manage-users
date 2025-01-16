@@ -11,7 +11,8 @@ const useDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await getAllUsers();
+        const response = await getAllUsers();
+        const data = await response.json();
         setUsers(data.map(user => ({ ...user, id: user._id })));
       } catch (error) {
         setErrorMessage(error.message);
@@ -43,10 +44,15 @@ const useDashboard = () => {
       setErrorMessage('No authentication token found');
       return;
     }
-    const updatedUsers = users.filter((user) => user.id !== id); 
-    setUsers(updatedUsers);
+
     try {
-      await deleteUser(id);
+      const response = await deleteUser(id);
+      if (response.status === 500) {
+        setErrorMessage('Failed to delete user');
+        return;
+      }
+      const updatedUsers = users.filter((user) => user.id !== id);
+      setUsers(updatedUsers);
     } catch (error) {
       console.error('Error deleting user:', error.message);
     }
@@ -66,13 +72,15 @@ const useDashboard = () => {
         return;
       }
   
-      const data = await (isEditing ? editUser(selectedUser._id, userData) : addUser(userData));
-  
+      const response = await (isEditing ? editUser(selectedUser._id, userData) : addUser(userData));
+      const data = await response.json();
+
       if (isEditing) {
         setUsers(users.map((user) => (user._id === data._id ? { ...user, ...data } : user)));
 
       } else {
-        setUsers([...users, data]);
+        setUsers([...users, { ...data, id: data._id }]); 
+
       }
       setIsPopupOpen(false);
     } catch (error) {

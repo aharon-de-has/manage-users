@@ -15,7 +15,8 @@ const useLogin = () => {
     e.preventDefault();
 
     try {
-      const data = await login(username, password);
+      const response = await login(username, password);
+      const data = await response.json();
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
     } catch (error) {

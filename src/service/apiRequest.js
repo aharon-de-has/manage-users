@@ -12,17 +12,16 @@ const apiRequest = async (method, endpoint, body = null) => {
   
     try {
       const response = await fetch(`${apiUrl}${endpoint}`, {
-        // const response = await fetch(`https://server-n42x.onrender.com/api/${endpoint}`, {
         method,
         headers,
         body: body ? JSON.stringify(body) : null,
       });
+      console.log("🚀 ~ apiRequest ~ response:", response)
+      // if (!response.ok) {
+      //   throw new Error('Request failed');
+      // }
   
-      if (!response.ok) {
-        throw new Error('Request failed');
-      }
-  
-      return await response.json();
+      return await response;
     } catch (error) {
       throw new Error(error.message);
     }
