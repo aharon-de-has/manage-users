@@ -26,6 +26,7 @@ const useLogin = () => {
     } catch (error) {
       setErrorMessage('Server error, please try again')
       dispatch(setError(error.message));
+      console.error('Error logging in:', error.message);
     }
   };
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ErrorMessage from '../components/ErrorMessage'; 
+import ErrorMessage from './ErrorMessage'; 
 
 const UserForm = ({ user, onSubmit, onClose }) => {
   const [username, setUsername] = useState(user?.username || '');
