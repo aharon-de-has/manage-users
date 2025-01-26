@@ -6,6 +6,7 @@ const authSlice = createSlice({
     token: localStorage.getItem('authToken') || null, 
     isAuthenticated: !!localStorage.getItem('authToken'), 
     error: null },
+    
   reducers: {
     loginSuccess: (state, action) => {
       localStorage.setItem('authToken', action.payload);

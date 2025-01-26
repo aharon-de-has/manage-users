@@ -11,7 +11,7 @@ const useLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -23,7 +23,7 @@ const useLogin = () => {
       }
       dispatch(loginSuccess(data.token));
       navigate('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage('Server error, please try again')
       dispatch(setError(error.message));
       console.error('Error logging in:', error.message);

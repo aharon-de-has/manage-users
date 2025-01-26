@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import ErrorMessage from './ErrorMessage'; 
 
-const UserForm = ({ user, onSubmit, onClose }) => {
+interface User {
+  _id?: string;
+  username?: string;
+  fullName?: string;
+  email?: string;
+}
+
+const UserForm = ({ user, onSubmit, onClose }: { user: User; onSubmit: any; onClose: any }) => {
   const [username, setUsername] = useState(user?.username || '');
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
     setLoading(true); 
     setError(null); 
@@ -18,7 +25,7 @@ const UserForm = ({ user, onSubmit, onClose }) => {
   
     try {
       await onSubmit(userData); 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error saving user:', err.message);
       setError(err.message);
     } finally {
@@ -28,7 +35,7 @@ const UserForm = ({ user, onSubmit, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ErrorMessage message={error} />
+      <ErrorMessage message={error?? undefined} />
 
       <input
         value={username}

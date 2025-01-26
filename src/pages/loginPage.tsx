@@ -1,6 +1,5 @@
-import React from 'react';
 import useLogin from '../hooks/useLogin';
-import ErrorMessage from '../components/ErrorMessage'; 
+import ErrorMessage from '../components/ErrorMessage';
 
 const LoginPage = () => {
   const { 
@@ -35,7 +34,7 @@ const LoginPage = () => {
           setErrorMessage('')
         }}
       />
-      <button type="submit" disabled={!username || !password || errorMessage}>Login</button>
+      <button type="submit" disabled={!username || !password || Boolean(errorMessage)}>Login</button>
     </form>
   );
 };

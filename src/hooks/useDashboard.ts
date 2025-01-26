@@ -2,13 +2,22 @@ import { useState, useEffect } from 'react';
 import { getAllUsers, addUser, editUser, deleteUser } from '../service/fetchUsers';
 import  store  from '../redux/store';
 
-const useDashboard = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+interface User {
+  _id: string;
+  id?: string; 
+  username?: string;
+  fullName?: string;
+  email?: string;
+  password?: string;
+}
 
+const useDashboard = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<{ _id: string } | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -19,8 +28,8 @@ const useDashboard = () => {
           return;
         }
      
-        setUsers(data.map(user => ({ ...user, id: user._id })));
-      } catch (error) {
+        setUsers(data.map((user: { _id: string }) => ({ ...user, id: user._id })));
+      } catch (error: any) {
         setErrorMessage(error.message);
       }
     };
@@ -35,15 +44,15 @@ const useDashboard = () => {
     setErrorMessage(null);
   };
 
-  const handleEditUser = (user) => {
+
+  const handleEditUser = (user: User) => {
     setSelectedUser(user);
     setIsEditing(true);
     setIsPopupOpen(true);
     setErrorMessage(null);
   };
 
-
-  const handleDeleteUser = async (id) => {
+  const handleDeleteUser = async (id: string) => {
     const token = store.getState().auth.token;
     if (!token) {
       setErrorMessage('No authentication token found');
@@ -58,12 +67,12 @@ const useDashboard = () => {
       }
       const updatedUsers = users.filter((user) => user.id !== id);
       setUsers(updatedUsers);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting user:', error.message);
     }
   };
 
-  const handleFormSubmit = async (userData) => {
+  const handleFormSubmit = async (userData: Partial<User>) => {
     try {
       const token = store.getState().auth.token;
       if (!token) throw new Error('Authentication token is missing.');
@@ -77,7 +86,7 @@ const useDashboard = () => {
         return;
       }
   
-      const response = await (isEditing ? editUser(selectedUser._id, userData) : addUser(userData));
+      const response = await (isEditing ? editUser(selectedUser?._id || '', userData) : addUser(userData));
       const data = await response.json();
 
       if (isEditing) {
@@ -88,7 +97,7 @@ const useDashboard = () => {
 
       }
       setIsPopupOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       if (error.message === 'Authentication token is missing.') {
         setErrorMessage('Authentication token is missing.');
         return;
