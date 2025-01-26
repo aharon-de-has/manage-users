@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div>
       <h1>Welcome to the manage-users!</h1>
-      <button onClick={() => navigate('/login')}>lets go</button>
+      <button onClick={() => navigate('/login')}>let's go</button>
     </div>
   );
 };
